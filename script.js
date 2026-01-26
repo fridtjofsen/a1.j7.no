@@ -61,7 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
 function checkForUpdates() {
     console.log('Checking for autonomous updates...');
     // This will be implemented with GitHub Actions integration
+    // Future: Fetch from GitHub API or custom endpoint
 }
 
-// Initialize periodic checks (every 5 minutes)
-setInterval(checkForUpdates, 300000);
+// Initialize periodic checks (every 30 minutes to conserve resources)
+// Reduced frequency for better performance and battery life
+setInterval(checkForUpdates, 1800000);

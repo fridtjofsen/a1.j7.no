@@ -177,7 +177,7 @@
                         <div class="metric-label">Autonomous Updates</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value" id="response-time">&lt;100ms</div>
+                        <div class="metric-value" id="response-time">N/A</div>
                         <div class="metric-label">Avg Response Time</div>
                     </div>
                 </div>
@@ -226,15 +226,23 @@
         // Simulate checking system status
         function checkSystemStatus() {
             // In a real implementation, this would make API calls to check actual status
+            // For now, using placeholder values until GitHub API integration is complete
             console.log('Checking system status...');
             
-            // Update deployment count (this would come from GitHub API in production)
-            const deploymentsToday = Math.floor(Math.random() * 5);
+            // These will be replaced with actual GitHub API calls in the future:
+            // - GitHub Actions API for deployment counts
+            // - Repository API for autonomous update tracking
+            // - Performance monitoring API for response times
+            
+            // Placeholder values (will be dynamic once API is integrated)
+            const deploymentsToday = 0; // TODO: Fetch from GitHub Actions API
             document.getElementById('deployments').textContent = deploymentsToday;
             
-            // Update autonomous updates count
-            const autonomousUpdates = Math.floor(Math.random() * 30);
+            const autonomousUpdates = 0; // TODO: Fetch from repository commits
             document.getElementById('updates').textContent = autonomousUpdates;
+            
+            // Response time will be measured via actual API calls
+            document.getElementById('response-time').textContent = 'N/A';
             
             updateLastCheckTime();
         }
