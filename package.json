@@ -1,0 +1,38 @@
+{
+  "name": "a1-j7-no",
+  "version": "1.0.0",
+  "description": "An autonomous AI-powered website",
+  "main": "index.html",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"No tests configured yet\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fridtjofsen/a1.j7.no.git"
+  },
+  "keywords": [
+    "autonomous",
+    "ai",
+    "website",
+    "github-pages",
+    "copilot",
+    "jules"
+  ],
+  "author": "A1.j7.no",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fridtjofsen/a1.j7.no/issues"
+  },
+  "homepage": "https://a1.j7.no",
+  "devDependencies": {},
+  "dependencies": {
+    "@atproto/api": "^0.12.0",
+    "@sendgrid/mail": "^8.1.0",
+    "mysql2": "^3.6.0"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
