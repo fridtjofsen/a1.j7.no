@@ -8,7 +8,7 @@ class DatabaseService {
       host: process.env.MYSQL_SERVER || process.env.MYSQL_HOST,
       user: process.env.MYSQL_USERNAME || process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      database: 'a1j7no', // Default database name from SETUP.md
+      database: 'j7nor02', // Default database name from SETUP.md
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0
