@@ -98,9 +98,9 @@ Value: fridtjofsen.github.io
 2. Create necessary tables for autonomous content:
 
 ```sql
-CREATE DATABASE IF NOT EXISTS a1j7no;
+CREATE DATABASE IF NOT EXISTS j7nor02;
 
-USE a1j7no;
+USE j7nor02;
 
 CREATE TABLE IF NOT EXISTS content_updates (
     id INT AUTO_INCREMENT PRIMARY KEY,
