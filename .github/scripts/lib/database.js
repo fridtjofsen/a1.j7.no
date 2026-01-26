@@ -8,9 +8,9 @@ class DatabaseService {
       host: process.env.MYSQL_SERVER || process.env.MYSQL_HOST,
       user: process.env.MYSQL_USERNAME || process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      database: 'j7nor02', // Default database name from SETUP.md
+      database: process.env.MYSQL_DATABASE || 'j7nor02', // Default database name from SETUP.md, but prefer env var
       waitForConnections: true,
-      connectionLimit: 10,
+      connectionLimit: 1, // Restricted by hosting provider (max 10 user connections, strict rate limits)
       queueLimit: 0
     };
   }
@@ -18,50 +18,26 @@ class DatabaseService {
   async initialize() {
     if (this.pool) return;
 
-    // First, connect without specifying a database to avoid access denied errors
-    const tempConfig = { ...this.config };
-    delete tempConfig.database;
-    
-    let tempConnection;
     try {
-      // Create a temporary connection without database
-      tempConnection = await mysql.createConnection(tempConfig);
+      // Create the pool directly with the database specified.
+      // We assume the database exists and is assigned by the hosting provider.
+      // We cannot create databases or choose names due to permissions.
+      this.pool = mysql.createPool(this.config);
       
-      // Check if database exists
-      const [databases] = await tempConnection.query(
-        'SHOW DATABASES LIKE ?',
-        [this.config.database]
-      );
-      
-      // Note: Database identifiers cannot be parameterized, so we use escapeId
-      const dbName = mysql.escapeId(this.config.database);
-      
-      if (databases.length === 0) {
-        console.log(`Database ${this.config.database} does not exist. Attempting to create it...`);
-        await tempConnection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
-        console.log(`Database ${this.config.database} created`);
-      }
-      
-      // Select the database
-      await tempConnection.query(`USE ${dbName}`);
       console.log(`Connected to database ${this.config.database}`);
+      await this.ensureSchema();
       
     } catch (error) {
       console.error('Failed to initialize database:', error);
       throw error;
-    } finally {
-      if (tempConnection) await tempConnection.end();
     }
-
-    // Now create the pool with the database specified
-    this.pool = mysql.createPool(this.config);
-    await this.ensureSchema();
   }
 
   async ensureSchema() {
     const connection = await this.pool.getConnection();
     try {
         // Tables from SETUP.md
+        // We use CREATE TABLE IF NOT EXISTS which is generally allowed within the assigned DB
         await connection.query(`
             CREATE TABLE IF NOT EXISTS content_updates (
                 id INT AUTO_INCREMENT PRIMARY KEY,

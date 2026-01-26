@@ -27,8 +27,8 @@ This guide provides step-by-step instructions for setting up the autonomous webs
 Go to **Settings** → **Secrets and variables** → **Actions** and add the following secrets:
 
 ```
-MYSQL_HOST          # Your MySQL server hostname
-MYSQL_DATABASE      # Database name
+MYSQL_HOST          # Your MySQL server hostname (e.g., DATABASENAVN.mysql.domeneshop.no)
+MYSQL_DATABASE      # Database name (must match the name assigned by your hosting provider)
 MYSQL_USER          # Database username
 MYSQL_PASSWORD      # Database password
 EMAIL_API_KEY       # Email service API key (e.g., SendGrid, Mailgun)
@@ -94,14 +94,14 @@ Value: fridtjofsen.github.io
 
 ### MySQL Database Configuration
 
-1. Ensure your MySQL database is accessible from GitHub Actions runners
-2. Create necessary tables for autonomous content:
+1. Ensure your MySQL database is created via your hosting provider's control panel (e.g., Domeneshop).
+2. Note the assigned database name, hostname, username, and password.
+3. The autonomous agent will automatically create the necessary tables within the existing database.
+
+For reference, the schema used is:
 
 ```sql
-CREATE DATABASE IF NOT EXISTS j7nor02;
-
-USE j7nor02;
-
+-- The agent runs these automatically:
 CREATE TABLE IF NOT EXISTS content_updates (
     id INT AUTO_INCREMENT PRIMARY KEY,
     update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
