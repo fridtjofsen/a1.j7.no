@@ -66,4 +66,11 @@ function checkForUpdates() {
 
 // Initialize periodic checks (every 30 minutes to conserve resources)
 // Reduced frequency for better performance and battery life
-setInterval(checkForUpdates, 1800000);
+let updateCheckInterval = setInterval(checkForUpdates, 1800000);
+
+// Cleanup interval on page unload to prevent memory leaks
+window.addEventListener('beforeunload', function() {
+    if (updateCheckInterval) {
+        clearInterval(updateCheckInterval);
+    }
+});
