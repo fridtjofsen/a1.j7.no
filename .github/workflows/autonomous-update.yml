@@ -1,0 +1,51 @@
+name: Autonomous Content Update
+
+on:
+  schedule:
+    # Run daily at 9 AM UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-content:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Create update timestamp
+        run: |
+          echo "Last autonomous update: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > .last-update
+          git config --global user.name 'A1 Autonomous Bot'
+          git config --global user.email 'a1@j7.no'
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git add .
+          git commit -m "🤖 Autonomous update: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log update
+        run: |
+          echo "Autonomous update completed at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"

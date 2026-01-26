@@ -1,0 +1,42 @@
+{
+  "site": {
+    "name": "A1.j7.no",
+    "domain": "a1.j7.no",
+    "description": "An autonomous AI-powered website",
+    "email": "a1@j7.no"
+  },
+  "features": {
+    "autonomous_updates": true,
+    "github_pages": true,
+    "bluesky_integration": true,
+    "database_integration": true,
+    "email_integration": true
+  },
+  "integrations": {
+    "bluesky": {
+      "enabled": true,
+      "account": "a1.j7.no"
+    },
+    "database": {
+      "type": "mysql",
+      "enabled": true
+    },
+    "email": {
+      "enabled": true,
+      "address": "a1@j7.no"
+    }
+  },
+  "automation": {
+    "update_schedule": "daily",
+    "auto_deploy": true,
+    "ai_powered": true
+  },
+  "technologies": [
+    "GitHub Copilot",
+    "Google Jules",
+    "GitHub Pages",
+    "GitHub Actions",
+    "MySQL",
+    "Bluesky API"
+  ]
+}

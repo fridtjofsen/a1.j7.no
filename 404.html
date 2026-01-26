@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | A1.j7.no</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            text-align: center;
+            padding: 2rem;
+        }
+        .error-content {
+            max-width: 600px;
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        .error-message {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .error-description {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+        .back-home {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+        .back-home:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <div class="error-content">
+            <div class="error-code">404</div>
+            <h1 class="error-message">Page Not Found</h1>
+            <p class="error-description">
+                Oops! The autonomous system couldn't find the page you're looking for.
+                It might have been moved or doesn't exist.
+            </p>
+            <a href="/" class="back-home">Return to Home</a>
+        </div>
+    </div>
+    <script>
+        // Log 404 error for analytics
+        console.log('404 Error: Page not found -', window.location.pathname);
+    </script>
+</body>
+</html>
