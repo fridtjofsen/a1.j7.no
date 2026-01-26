@@ -33,16 +33,16 @@ class DatabaseService {
         [this.config.database]
       );
       
+      // Note: Database identifiers cannot be parameterized, so we use escapeId
+      const dbName = mysql.escapeId(this.config.database);
+      
       if (databases.length === 0) {
         console.log(`Database ${this.config.database} does not exist. Attempting to create it...`);
-        // Note: Database identifiers cannot be parameterized, so we use escapeId
-        const dbName = mysql.escapeId(this.config.database);
         await tempConnection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
         console.log(`Database ${this.config.database} created`);
       }
       
       // Select the database
-      const dbName = mysql.escapeId(this.config.database);
       await tempConnection.query(`USE ${dbName}`);
       console.log(`Connected to database ${this.config.database}`);
       
