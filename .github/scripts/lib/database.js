@@ -29,18 +29,22 @@ class DatabaseService {
       
       // Check if database exists
       const [databases] = await tempConnection.query(
-        "SHOW DATABASES LIKE 'a1j7no'"
+        'SHOW DATABASES LIKE ?',
+        [this.config.database]
       );
       
       if (databases.length === 0) {
-        console.log('Database a1j7no does not exist. Attempting to create it...');
-        await tempConnection.query('CREATE DATABASE IF NOT EXISTS a1j7no');
-        console.log('Database a1j7no created');
+        console.log(`Database ${this.config.database} does not exist. Attempting to create it...`);
+        // Note: Database identifiers cannot be parameterized, so we use escapeId
+        const dbName = mysql.escapeId(this.config.database);
+        await tempConnection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
+        console.log(`Database ${this.config.database} created`);
       }
       
       // Select the database
-      await tempConnection.query('USE a1j7no');
-      console.log('Connected to database a1j7no');
+      const dbName = mysql.escapeId(this.config.database);
+      await tempConnection.query(`USE ${dbName}`);
+      console.log(`Connected to database ${this.config.database}`);
       
     } catch (error) {
       console.error('Failed to initialize database:', error);
