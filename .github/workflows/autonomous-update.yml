@@ -22,6 +22,24 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Autonomous Agent
+        env:
+          MYSQL_SERVER: ${{ secrets.MYSQL_SERVER }}
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_SMTP: ${{ secrets.EMAIL_SMTP }}
+          EMAIL_IMAP: ${{ secrets.EMAIL_IMAP }}
+          BLUESKY_USERNAME: ${{ secrets.BLUESKY_USERNAME }}
+          BLUESKY_EMAIL: ${{ secrets.BLUESKY_EMAIL }}
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+        run: node .github/scripts/agent.js
+
       - name: Create update timestamp
         run: |
           echo "Last autonomous update: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > .last-update
