@@ -18,44 +18,44 @@ class DatabaseService {
   async initialize() {
     if (this.pool) return;
 
-    // Try to connect to the specific database
-    try {
-      this.pool = mysql.createPool(this.config);
-      // Test connection
-      const connection = await this.pool.getConnection();
-      connection.release();
-      console.log('Connected to database a1j7no');
-    } catch (error) {
-      if (error.code === 'ER_BAD_DB_ERROR') {
-        console.log('Database a1j7no does not exist. Attempting to create it...');
-        await this.createDatabase();
-        // Retry connection
-        this.pool = mysql.createPool(this.config);
-        console.log('Connected to created database a1j7no');
-      } else {
-        throw error;
-      }
-    }
-
-    await this.ensureSchema();
-  }
-
-  async createDatabase() {
-    // Connect without database selected
+    // First, connect without specifying a database to avoid access denied errors
     const tempConfig = { ...this.config };
     delete tempConfig.database;
-
-    let connection;
+    
+    let tempConnection;
     try {
-        connection = await mysql.createConnection(tempConfig);
-        await connection.query('CREATE DATABASE IF NOT EXISTS a1j7no');
-        console.log('Database a1j7no created');
+      // Create a temporary connection without database
+      tempConnection = await mysql.createConnection(tempConfig);
+      
+      // Check if database exists
+      const [databases] = await tempConnection.query(
+        'SHOW DATABASES LIKE ?',
+        [this.config.database]
+      );
+      
+      // Note: Database identifiers cannot be parameterized, so we use escapeId
+      const dbName = mysql.escapeId(this.config.database);
+      
+      if (databases.length === 0) {
+        console.log(`Database ${this.config.database} does not exist. Attempting to create it...`);
+        await tempConnection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
+        console.log(`Database ${this.config.database} created`);
+      }
+      
+      // Select the database
+      await tempConnection.query(`USE ${dbName}`);
+      console.log(`Connected to database ${this.config.database}`);
+      
     } catch (error) {
-        console.error('Failed to create database:', error);
-        throw error;
+      console.error('Failed to initialize database:', error);
+      throw error;
     } finally {
-        if (connection) await connection.end();
+      if (tempConnection) await tempConnection.end();
     }
+
+    // Now create the pool with the database specified
+    this.pool = mysql.createPool(this.config);
+    await this.ensureSchema();
   }
 
   async ensureSchema() {
